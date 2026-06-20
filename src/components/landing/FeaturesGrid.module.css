@@ -1,0 +1,124 @@
+/* ===================================
+   SECURITY — Asymmetric card layout
+   Card 1 wide left, Cards 2+3 stacked right.
+   Staggered fade-up on scroll.
+   =================================== */
+
+.section {
+  padding: 80px 0;
+  background: var(--bg-white);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.topLabel {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.headline {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: var(--text-heading);
+  margin-bottom: 44px;
+}
+
+/* ---- Asymmetric grid ---- */
+.grid {
+  display: grid;
+  grid-template-columns: 45% 1fr;
+  gap: 16px;
+  text-align: left;
+}
+
+/* ---- Card base (shared) ---- */
+.cardPrimary,
+.cardSecondary {
+  background: var(--bg-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 28px 24px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.45s ease,
+    transform 0.45s ease;
+
+  /* hidden state — scroll entrance */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.gridVisible .cardPrimary,
+.gridVisible .cardSecondary {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cardPrimary:hover,
+.cardSecondary:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Primary card fills full height of left column */
+.cardPrimary {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+/* Right stack */
+.rightStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---- Icon ---- */
+.iconWrap {
+  margin-bottom: 14px;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  color: var(--text-heading);
+  opacity: 0.45;
+}
+
+/* ---- Card text ---- */
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 8px;
+}
+
+.cardDescription {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-body);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .headline {
+    font-size: 28px;
+  }
+}

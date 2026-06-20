@@ -1,0 +1,231 @@
+/* ===================================
+   PROBLEM SECTION — Hurdles to D2C
+   profitability. Two columns of cards.
+   =================================== */
+
+.section {
+  padding: 160px 0;
+  background: rgba(247, 249, 251, 0.5);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+
+/* ---- Header ---- */
+
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.visible .header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.headline {
+  font-family: var(--font-display), 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #000000;
+  margin: 0 0 16px;
+}
+
+.sub {
+  font-family: var(--font-body), 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #46464c;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ---- Two-column grid ---- */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+}
+
+.visible .grid {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.colTitle {
+  font-family: var(--font-display), 'Plus Jakarta Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.colIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.colIcon[data-variant="error"] {
+  background: rgba(186, 26, 26, 0.05);
+  color: #ba1a1a;
+}
+
+.colIcon[data-variant="secondary"] {
+  background: rgba(94, 57, 224, 0.05);
+  color: #5e39e0;
+}
+
+/* ---- Cards ---- */
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  padding: 32px;
+  transition: border-color 0.3s ease;
+}
+
+.card:hover {
+  border-color: rgba(94, 57, 224, 0.4);
+}
+
+/* Progress bar */
+.progressTrack {
+  height: 4px;
+  background: #e6e8ea;
+  border-radius: 999px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #ba1a1a;
+  border-radius: 999px;
+  width: 75%;
+  transition: width 1s ease;
+}
+
+.progressFill[data-width="75"] { width: 75%; }
+.progressFill[data-width="50"] { width: 50%; }
+
+.card:hover .progressFill[data-width="75"] { width: 100%; }
+.card:hover .progressFill[data-width="50"] { width: 67%; }
+
+/* Mini bars */
+.barGroup {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.miniBar {
+  width: 8px;
+  border-radius: 999px;
+  background: rgba(94, 57, 224, 0.2);
+  transition: background 0.3s ease;
+}
+
+.card:hover .miniBar {
+  background: #5e39e0;
+}
+
+/* Pulse dots */
+.dotGroup {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.pulseDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(94, 57, 224, 0.2);
+  animation: pulseDotAnim 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseDotAnim {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Card text */
+.cardTitle {
+  font-family: var(--font-body), 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 8px;
+}
+
+.cardDesc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #46464c;
+  margin: 0;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .section {
+    padding: 100px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+}

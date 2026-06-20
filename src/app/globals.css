@@ -1,0 +1,242 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #FAFAF8;
+    --bg-white: #FFFFFF;
+    --bg-muted: #F4F3F0;
+    --bg-accent: #F0EEEB;
+
+    --text-heading: #1A1A2E;
+    --text-body: #4A4A5A;
+    --text-muted: #8A8A96;
+    --text-faint: #B0B0BA;
+
+    --brand: #1A1A2E;
+    --brand-hover: #2D2D44;
+    --brand-accent: #6C5CE7;
+
+    --border-color: #E8E7E4;
+    --border-hover: #D0CFC8;
+
+    --color-success: #16A34A;
+    --color-warning: #D97706;
+    --color-danger: #DC2626;
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-pill: 999px;
+
+    --transition: 0.18s ease;
+    --font: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    /* --- Landing page design tokens (Velocity Minimalist) --- */
+    --lp-primary: #000000;
+    --lp-on-primary: #ffffff;
+    --lp-secondary: #5e39e0;
+    --lp-on-secondary: #ffffff;
+    --lp-secondary-container: #7757fa;
+    --lp-surface: #f7f9fb;
+    --lp-surface-container: #eceef0;
+    --lp-surface-container-low: #f2f4f6;
+    --lp-surface-container-high: #e6e8ea;
+    --lp-on-surface: #191c1e;
+    --lp-on-surface-variant: #46464c;
+    --lp-outline: #77767c;
+    --lp-outline-variant: #c7c5cc;
+    --lp-error: #ba1a1a;
+    --lp-primary-container: #191b27;
+    --lp-inverse-surface: #2d3133;
+
+    --background: 0 0% 100%;
+    --foreground: 240 10% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 14%;
+    --primary: 240 10% 14%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 8% 95%;
+    --secondary-foreground: 240 10% 14%;
+    --muted: 40 8% 95%;
+    --muted-foreground: 240 5% 55%;
+    --accent: 40 8% 95%;
+    --accent-foreground: 240 10% 14%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 10% 90%;
+    --input: 40 10% 90%;
+    --ring: 240 10% 14%;
+    --radius: 0.375rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-page);
+    color: var(--text-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(108, 92, 231, 0.12);
+  }
+}
+
+/* ================================================
+   Landing Page — Shared utility classes
+   ================================================ */
+
+@layer components {
+  /* Glass card used across multiple sections */
+  .lp-glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  /* Bento card for dark sections */
+  .lp-bento-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Marketplace dark background */
+  .lp-marketplace-dark {
+    background: radial-gradient(circle at center, #1a1b26 0%, #0f1014 100%);
+    position: relative;
+  }
+
+  /* Ambient glow overlay */
+  .lp-ambient-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(94, 57, 224, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Footer gradient with noise */
+  .lp-footer-gradient {
+    background: radial-gradient(circle at top right, #5e39e0 0%, #1c0062 40%, #000000 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lp-footer-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Dot grid background */
+  .lp-dot-grid {
+    background-image: radial-gradient(#e0e3e5 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+  }
+}
+
+/* ================================================
+   Landing Page — Animations
+   ================================================ */
+
+@keyframes lp-pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes lp-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-25%); }
+}
+
+@keyframes lp-dash {
+  to { stroke-dashoffset: -100; }
+}
+
+/* ================================================
+   Bridge Tailwind slate/blue → design system tokens
+   so existing dashboard pages inherit correct palette
+   without individual file edits.
+   ================================================ */
+
+@layer utilities {
+  /* --- Background overrides --- */
+  .bg-white { background-color: var(--bg-white) !important; }
+  .bg-slate-50, .bg-slate-50\/50 { background-color: var(--bg-page) !important; }
+  .bg-slate-100 { background-color: var(--bg-muted) !important; }
+
+  /* --- Text color overrides --- */
+  .text-slate-900 { color: var(--text-heading) !important; }
+  .text-slate-800 { color: var(--text-heading) !important; }
+  .text-slate-700 { color: var(--text-body) !important; }
+  .text-slate-600 { color: var(--text-body) !important; }
+  .text-slate-500 { color: var(--text-muted) !important; }
+  .text-slate-400 { color: var(--text-faint) !important; }
+
+  /* --- Border overrides --- */
+  .border-slate-200, .border-slate-200\/50 { border-color: var(--border-color) !important; }
+  .border-slate-100 { border-color: var(--border-color) !important; }
+  .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: var(--border-color) !important; }
+
+  /* --- Blue accent → brand-accent --- */
+  .text-blue-600 { color: var(--brand-accent) !important; }
+  .text-blue-700 { color: var(--brand-accent) !important; }
+  .bg-blue-50 { background-color: rgba(108, 92, 231, 0.08) !important; }
+  .bg-blue-100 { background-color: rgba(108, 92, 231, 0.1) !important; }
+  .bg-blue-600 { background-color: var(--brand) !important; }
+  .border-blue-200 { border-color: rgba(108, 92, 231, 0.2) !important; }
+
+  /* --- Purple accent (AI) stays close but uses brand-accent --- */
+  .text-purple-600 { color: var(--brand-accent) !important; }
+  .text-purple-700 { color: var(--brand-accent) !important; }
+  .text-purple-900 { color: var(--text-heading) !important; }
+  .bg-purple-50, .bg-purple-50\/50 { background-color: rgba(108, 92, 231, 0.06) !important; }
+  .bg-purple-600 { background-color: var(--brand-accent) !important; }
+  .bg-purple-700 { background-color: #5B4BD5 !important; }
+  .border-purple-100 { border-color: rgba(108, 92, 231, 0.12) !important; }
+  .border-purple-200 { border-color: rgba(108, 92, 231, 0.2) !important; }
+  .border-purple-500 { border-color: var(--brand-accent) !important; }
+
+  /* --- Shadow overrides --- */
+  .shadow-sm { box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 1px 8px rgba(0,0,0,0.04) !important; }
+  .shadow-md { box-shadow: 0 2px 16px rgba(0,0,0,0.06) !important; }
+
+  /* --- Hover bg overrides --- */
+  .hover\:bg-slate-50:hover { background-color: var(--bg-muted) !important; }
+  .hover\:bg-purple-50:hover { background-color: rgba(108, 92, 231, 0.06) !important; }
+  .hover\:bg-blue-50:hover { background-color: rgba(108, 92, 231, 0.06) !important; }
+  .hover\:bg-orange-50:hover { background-color: rgba(217, 119, 6, 0.06) !important; }
+
+  /* --- Rounded → match landing radius --- */
+  .rounded-xl { border-radius: var(--radius-lg) !important; }
+
+  /* --- Custom scrollbar --- */
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+}

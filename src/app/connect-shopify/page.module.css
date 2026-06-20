@@ -1,0 +1,581 @@
+/* src/app/connect-shopify/page.module.css */
+
+.wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at center, #0f1015 0%, #060709 100%);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+}
+
+/* Ambient glow blobs */
+.glowBlob1 {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94, 57, 224, 0.15) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.glowBlob2 {
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.1) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 580px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Onboarding Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stepBadge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c084fc;
+}
+
+/* Main Container Card */
+.card {
+  background: rgba(18, 19, 26, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 40px rgba(94, 57, 224, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.fadeContent {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.6px;
+  margin-bottom: 12px;
+}
+
+.subText {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #94a3b8;
+  margin-bottom: 28px;
+}
+
+/* Input Fields */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.2px;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 18px;
+  padding-right: 130px;
+  border-radius: 14px;
+  font-size: 14px;
+  color: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2), inset 0 2px 4px rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.inputValid {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1) !important;
+}
+
+.inputIndicator {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.subdomainHint {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.inputHelp {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.inputHelp code {
+  color: #a855f7;
+  background: rgba(255,255,255,0.03);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+/* Error alert styling */
+.errorAlert {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #fca5a5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Action Rows */
+.actionRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.connectBtn {
+  width: 100%;
+  background: linear-gradient(135deg, #6c5ce7 0%, #5e39e0 100%);
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(94, 57, 224, 0.3);
+}
+
+.connectBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(94, 57, 224, 0.45);
+}
+
+.connectBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.connectBtn:disabled {
+  background: rgba(255, 255, 255, 0.08);
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #475569;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.divider span {
+  padding: 0 10px;
+}
+
+.demoBtn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 13px;
+  border-radius: 14px;
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.demoBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.trustFooter {
+  font-size: 11px;
+  color: #475569;
+  text-align: center;
+  margin-top: 32px;
+  line-height: 1.4;
+}
+
+/* STATE 2: Awaiting Authorization Popup */
+.logoFlow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.logoItem {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #6c5ce7 0%, #5e39e0 100%);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 0 20px rgba(94, 57, 224, 0.4);
+}
+
+.logoItemShopify {
+  width: 50px;
+  height: 50px;
+  background: #96bf48;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  box-shadow: 0 0 20px rgba(150, 191, 72, 0.3);
+}
+
+.logoConnector {
+  width: 80px;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.logoConnectorLine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #a855f7, transparent);
+  animation: connectionFlow 2s infinite linear;
+}
+
+@keyframes connectionFlow {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.stateTitle {
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.pendingActionBox {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.pendingSpinner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.pendingButtons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.secondaryActionBtn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px;
+  border-radius: 10px;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.secondaryActionBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  color: #ffffff;
+}
+
+.popupTroubleshoot {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* STATE 3: Syncing Checklist */
+.syncChecklist {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.syncItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.3s ease;
+}
+
+.syncIconContainer {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.dotIdle {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #334155;
+}
+
+.checkDone {
+  width: 18px;
+  height: 18px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.syncItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.syncLabel {
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.syncSubLabel {
+  font-size: 11px;
+  color: #c084fc;
+  font-weight: 500;
+  animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.syncIdle .syncLabel {
+  color: #475569;
+}
+
+.syncActive .syncLabel {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.syncCompleted .syncLabel {
+  color: #94a3b8;
+  text-decoration: none;
+}
+
+.syncIndicatorBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.syncIndicatorActive {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #6c5ce7, #a855f7);
+  animation: syncProgress 12s infinite ease-in-out;
+}
+
+@keyframes syncProgress {
+  0% { width: 0%; }
+  30% { width: 40%; }
+  60% { width: 75%; }
+  90% { width: 95%; }
+  100% { width: 100%; }
+}
+
+/* STATE 4: Success */
+.successGlow {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+  border: 2px solid #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);
+}
+
+.successIcon {
+  font-size: 32px;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.successRedirect {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 24px;
+}

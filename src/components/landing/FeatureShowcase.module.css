@@ -1,0 +1,359 @@
+/* ===================================
+   AI FEATURES SECTION
+   Two alternating feature rows.
+   =================================== */
+
+.section {
+  padding: 160px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 160px;
+}
+
+/* ---- Feature row (2-col) ---- */
+
+.featureRow {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 96px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.visible .featureRow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.visible .featureRow:nth-child(2) {
+  transition-delay: 0.15s;
+}
+
+.featureRowReverse {
+  direction: ltr;
+}
+
+/* ---- Label / text ---- */
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #5e39e0;
+  margin-bottom: 16px;
+}
+
+.featureTitle {
+  font-family: var(--font-display), 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #000000;
+  margin: 0 0 16px;
+}
+
+.featureDesc {
+  font-family: var(--font-body), 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #46464c;
+  margin: 0;
+}
+
+/* ---- Check list ---- */
+
+.checkList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.checkItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.checkItem p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #191c1e;
+  margin: 0;
+}
+
+.checkIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(94, 57, 224, 0.1);
+  color: #5e39e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ---- Stats row ---- */
+
+.statsRow {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: 24px;
+  flex: 1;
+}
+
+.statValue {
+  font-family: var(--font-display), 'Plus Jakarta Sans', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #5e39e0;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #46464c;
+}
+
+/* ---- Dashboard visual card ---- */
+
+.featureVisual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboardCard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 3rem;
+  padding: 48px;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.dashInner {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashHeaderBar {
+  height: 16px;
+  width: 96px;
+  background: #eceef0;
+  border-radius: 999px;
+}
+
+.dashDots {
+  display: flex;
+  gap: 8px;
+}
+
+.dotRed {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ba1a1a;
+}
+
+.dotPurple {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #5e39e0;
+}
+
+.dashBody {
+  flex: 1;
+  border-top: 1px solid #eceef0;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chartArea {
+  height: 128px;
+  background: rgba(94, 57, 224, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(94, 57, 224, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.chartFill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 67%;
+  background: rgba(94, 57, 224, 0.15);
+}
+
+.metricsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.metricBlock {
+  height: 64px;
+  background: #f2f4f6;
+  border-radius: 12px;
+}
+
+/* ---- Toggle card visual ---- */
+
+.toggleCard {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 3rem;
+  padding: 48px;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.toggleRow {
+  width: 100%;
+  height: 56px;
+  background: #000000;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggleRowDim {
+  width: 90%;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.9);
+  opacity: 0.6;
+}
+
+.toggleDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggleDot[data-active="true"] {
+  background: #5e39e0;
+}
+
+.toggleBarText {
+  width: 128px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.toggleBarText.shorter {
+  width: 96px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toggleBarText.wider {
+  width: 160px;
+}
+
+.toggleSwitch {
+  width: 48px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.toggleSwitch[data-on="true"] {
+  background: rgba(94, 57, 224, 0.2);
+}
+
+.toggleKnob {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.toggleSwitch[data-on="true"] .toggleKnob {
+  background: #5e39e0;
+  margin-left: auto;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 1024px) {
+  .featureRow {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 100px 0;
+    gap: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 80px 0;
+    gap: 80px;
+  }
+
+  .featureRow {
+    padding: 0 20px;
+  }
+
+  .statsRow {
+    flex-direction: column;
+  }
+}

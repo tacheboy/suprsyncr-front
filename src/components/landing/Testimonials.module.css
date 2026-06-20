@@ -1,0 +1,204 @@
+/* ===================================
+   TESTIMONIALS — Glass cards
+   with star ratings and quotes.
+   =================================== */
+
+.section {
+  padding: 160px 0;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+
+/* ---- Header row ---- */
+
+.headerRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 64px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.visible .headerRow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.headline {
+  font-family: var(--font-display), 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  color: #000000;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  font-family: var(--font-body), 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #46464c;
+  max-width: 480px;
+  margin: 0;
+}
+
+.navButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.navBtn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid #c7c5cc;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #191c1e;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.navBtn:hover {
+  background: #eceef0;
+}
+
+.navBtn:active {
+  transform: scale(0.9);
+}
+
+/* ---- Card grid ---- */
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
+}
+
+.visible .cardGrid {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 2.5rem;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.5s ease;
+}
+
+.card:hover {
+  border-color: rgba(94, 57, 224, 0.3);
+}
+
+/* Stars */
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+/* Quote */
+.quote {
+  font-family: var(--font-body), 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #46464c;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Author */
+.author {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: #e6e8ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #46464c;
+  flex-shrink: 0;
+}
+
+.authorName {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.authorRole {
+  font-size: 14px;
+  font-weight: 500;
+  color: #46464c;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 100px 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .card {
+    padding: 32px;
+    border-radius: 1.5rem;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
