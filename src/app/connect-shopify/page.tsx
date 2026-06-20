@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, Check, ExternalLink, RefreshCw, AlertCircle, ShoppingBag } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { initDemoStore, addConnectedPlatform } from '@/data/demoStore';
+import { initDemoStore, addConnectedPlatform, clearDemoData } from '@/data/demoStore';
 import styles from './page.module.css';
 
 // Sync step interface
@@ -108,25 +108,55 @@ export default function ConnectShopifyPage() {
 
     popupRef.current = popup;
 
-    // Direct fallback poll just in case postMessage fails
+    // Direct fallback. The popup may be on a different origin than the parent
+    // (e.g. a Cloudflare tunnel for the Shopify callback). Browsers block
+    // window.opener.postMessage across origins (COOP), so we cannot rely on
+    // the popup signalling success directly. When the popup closes, ask the
+    // backend whether a Shopify platform is now connected for this seller —
+    // that makes the flow robust regardless of postMessage.
     const timer = setInterval(() => {
       if (!popup || popup.closed) {
         clearInterval(timer);
-        // If popup closed but we are still in pending, check if connected or show helper
-        setTimeout(() => {
-          setStep((currentStep) => {
-            if (currentStep === 'oauth-pending') {
-              toast({
-                title: 'Authorization Pending',
-                description: 'The popup window was closed. If authorization succeeded, wait for syncing to begin, or click reconnect.',
-              });
-              return 'input';
-            }
-            return currentStep;
-          });
+        setTimeout(async () => {
+          const connected = await checkShopifyConnected();
+          if (connected) {
+            // Real Shopify is now connected → exit demo mode entirely so the
+            // baseApi interceptor stops returning fake products/orders/etc.
+            // and the UI starts hitting the real backend.
+            clearDemoData();
+            startDataSync(false);
+          } else {
+            toast({
+              title: 'Authorization Pending',
+              description: 'The popup window was closed without completing authorization. Click Connect to try again.',
+            });
+            setStep('input');
+          }
         }, 1000);
       }
     }, 1500);
+  };
+
+  /**
+   * Ask the backend whether the current seller has a connected Shopify platform.
+   * Used as a robust fallback when the popup couldn't postMessage back to us.
+   */
+  const checkShopifyConnected = async (): Promise<boolean> => {
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
+      if (!token) return false;
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+      const res = await fetch(`${apiBaseUrl}/api/v1/seller/platforms`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return false;
+      const body = await res.json();
+      const platforms: Array<{ platformType?: string; isActive?: boolean }> =
+        body?.data ?? [];
+      return platforms.some((p) => p.platformType === 'SHOPIFY');
+    } catch {
+      return false;
+    }
   };
 
   // Re-open authorization tab if closed prematurely

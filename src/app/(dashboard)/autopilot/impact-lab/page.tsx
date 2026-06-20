@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {
   TrendingUp, ArrowUpRight, ArrowDownRight, Shield, Clock, Undo2,
   Sparkles, Zap, BarChart3, CheckCircle2, AlertTriangle, Info,
-  ArrowRight, FlaskConical, Eye, ThumbsUp, Activity,
+  ArrowRight, FlaskConical, Eye, ThumbsUp, Activity, Inbox,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useActiveStoreId } from '@/hooks/useActiveStoreId';
@@ -346,14 +346,19 @@ function ImpactCard({ impact, onUndo, isDemo }: { impact: ImpactRecord; onUndo?:
 
 export default function ImpactLabPage() {
   const { storeId } = useActiveStoreId();
-  const { data: apiImpacts, isLoading } = useGetImpactQuery(storeId);
+  const { data: apiImpacts, isLoading, isSuccess } = useGetImpactQuery(storeId);
   const [undoChange] = useUndoChangeMutation();
   const [undoingId, setUndoingId] = useState<string | null>(null);
 
-  // Use real data if available, otherwise use demo fallback
-  const hasRealData = apiImpacts && apiImpacts.length > 0;
-  const impacts: ImpactRecord[] = hasRealData ? apiImpacts : DEMO_IMPACTS;
-  const isDemo = !hasRealData;
+  // A real store has a numeric platform ID; 'store-a' is the demo fallback.
+  const isRealStore = storeId !== 'store-a';
+  const hasRealData = isSuccess && Array.isArray(apiImpacts) && apiImpacts.length > 0;
+  // Show demo cards only when there's no real store connected, or when the API
+  // fails for some reason on a real store. Never show demo data alongside a
+  // successful empty response from a real connected store.
+  const showDemo = !isRealStore || (!isSuccess && !isLoading);
+  const impacts: ImpactRecord[] = hasRealData ? apiImpacts : (showDemo ? DEMO_IMPACTS : []);
+  const isDemo = showDemo && !hasRealData;
 
   // Summary stats
   const totalRevenueImpact = impacts.reduce((sum, i) => sum + i.estimatedRevenueImpactInr, 0);
@@ -532,6 +537,42 @@ export default function ImpactLabPage() {
                 style={{ background: 'var(--bg-muted)' }}
               />
             ))}
+          </div>
+        ) : impacts.length === 0 ? (
+          <div
+            className="rounded-xl p-10 flex flex-col items-center gap-4 text-center"
+            style={{ background: 'var(--bg-white)', border: '1px solid var(--border-color)' }}
+          >
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center"
+              style={{ background: 'rgba(108,92,231,0.08)' }}
+            >
+              <Inbox className="w-7 h-7" style={{ color: 'var(--brand-accent)' }} />
+            </div>
+            <div>
+              <p className="text-base font-semibold mb-1" style={{ color: 'var(--text-heading)' }}>
+                No impact data yet
+              </p>
+              <p className="text-sm max-w-sm" style={{ color: 'var(--text-muted)' }}>
+                Impact is measured 7 days after a change is approved and applied to your store. Run the AI agents, approve the proposals, then check back here next week.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Link
+                href="/autopilot/queue"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium no-underline transition-all"
+                style={{ background: 'var(--bg-page)', border: '1px solid var(--border-color)', color: 'var(--brand-accent)' }}
+              >
+                <Eye className="w-3.5 h-3.5" /> Review Queue
+              </Link>
+              <Link
+                href="/autopilot/services"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-white no-underline transition-all"
+                style={{ background: 'var(--brand)' }}
+              >
+                <Zap className="w-3.5 h-3.5" /> Run Agents
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="space-y-4">
