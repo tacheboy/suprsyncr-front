@@ -5,6 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import type { RootState } from '../index';
 import { isDemoMode, getDemoResponse, getDemoMutationResponse } from '@/data/demoStore';
+import { setCredentials, logout } from '../slices/authSlice';
 
 const realBaseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -80,9 +81,92 @@ const demoAwareBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQuer
   return result;
 };
 
+/**
+ * Wraps demoAwareBaseQuery with automatic access-token refresh.
+ *
+ * The access token is short-lived (15 min). When it expires the backend
+ * returns 401/403; without this, every request would fail until the user
+ * manually logs in again. On the first such failure we POST the refresh token
+ * to /api/v1/auth/refresh, store the new tokens, and transparently retry the
+ * original request. A module-level promise acts as a mutex so a burst of
+ * concurrent 401s triggers exactly one refresh, not one per request.
+ *
+ * If the refresh itself fails (refresh token also expired/invalid), we log the
+ * user out so the app redirects to login instead of silently looping.
+ */
+let refreshPromise: Promise<boolean> | null = null;
+
+function isAuthEndpoint(args: string | FetchArgs): boolean {
+  const url = typeof args === 'string' ? args : args.url;
+  return url.includes('/api/v1/auth/');
+}
+
+const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions,
+) => {
+  let result = await demoAwareBaseQuery(args, api, extraOptions);
+
+  const status = result.error?.status;
+  const isAuthFailure = status === 401 || status === 403;
+
+  // Don't try to refresh the refresh/login/register calls themselves.
+  if (!isAuthFailure || isAuthEndpoint(args)) {
+    return result;
+  }
+
+  const state = api.getState() as RootState;
+  const refreshToken = state.auth.refreshToken;
+  if (!refreshToken) {
+    return result;
+  }
+
+  // Single-flight refresh: the first failing request kicks it off; the rest await it.
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      const refreshResult = await realBaseQuery(
+        {
+          url: '/api/v1/auth/refresh',
+          method: 'POST',
+          body: { refreshToken },
+        },
+        api,
+        extraOptions,
+      );
+      const body = refreshResult.data as
+        | { success?: boolean; data?: { accessToken: string; refreshToken: string; user?: unknown } }
+        | undefined;
+      if (body?.success && body.data?.accessToken) {
+        api.dispatch(setCredentials(body.data as never));
+        return true;
+      }
+      api.dispatch(logout());
+      return false;
+    })().finally(() => {
+      // Release the lock once the in-flight refresh settles.
+      refreshPromise = null;
+    });
+  }
+
+  const refreshed = await refreshPromise;
+  if (refreshed) {
+    // Retry the original request with the new token now in state.
+    result = await demoAwareBaseQuery(args, api, extraOptions);
+  }
+  return result;
+};
+
 export const baseApi = createApi({
   reducerPath: 'api',
-  baseQuery: demoAwareBaseQuery,
+  baseQuery: baseQueryWithReauth,
+  // Stale data is cleared 30 s after the last subscriber unmounts.
+  // Combined with refetchOnMountOrArgChange: true on live queries, this
+  // ensures the user never sees data that is more than ~30 s old.
+  keepUnusedDataFor: 30,
+  // Requires setupListeners(store.dispatch) in store/index.ts.
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
   tagTypes: [
     'Auth',
     'Seller',
@@ -98,6 +182,8 @@ export const baseApi = createApi({
     'ChatMessages',
     'Analytics',
     'AutopilotQueue',
+    'StudioDrafts',
+    'Notifications',
   ],
   endpoints: () => ({}),
 });

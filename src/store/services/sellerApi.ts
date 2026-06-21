@@ -115,6 +115,19 @@ export const sellerApi = baseApi.injectEndpoints({
         method: 'POST',
       }),
     }),
+
+    registerShopifyWebhooks: builder.mutation<
+      ApiResponse<{
+        registered: boolean;
+        shopUrl: string;
+        webhookEndpoint: string;
+        topics: string[];
+        hint: string;
+      }>,
+      void
+    >({
+      query: () => ({ url: '/api/v1/shopify/webhooks/register', method: 'POST' }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -131,4 +144,5 @@ export const {
   useConnectPlatformMutation,
   useDisconnectPlatformMutation,
   useTestPlatformConnectionMutation,
+  useRegisterShopifyWebhooksMutation,
 } = sellerApi;

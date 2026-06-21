@@ -1,7 +1,7 @@
 // src/lib/constants.ts
 // Application constants
 
-import type { PlatformType, OrderStatus, ListingStatus } from '@/types';
+import type { OrderStatus, ListingStatus } from '@/types';
 
 // Platform configuration
 export const PLATFORMS: Record<string, { label: string; color: string; description: string; fields: string[] }> = {
@@ -70,6 +70,7 @@ export const LISTING_STATUS_CONFIG: Record<
 // Navigation items for sidebar
 export const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
+  { label: 'Notifications', href: '/notifications', icon: 'Bell' },
   { label: 'Orders', href: '/orders', icon: 'ShoppingBag' },
   { label: 'Products', href: '/products', icon: 'Package' },
   { label: 'Inventory', href: '/inventory', icon: 'Warehouse' },

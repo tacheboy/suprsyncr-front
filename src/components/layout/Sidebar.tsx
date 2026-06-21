@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS, AI_ITEMS, SETTINGS_ITEMS } from '@/lib/constants';
+import { useGetUnreadNotificationCountQuery } from '@/store/services/notificationApi';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -21,6 +22,7 @@ import {
   MessageSquare,
   Zap,
   BarChart3,
+  Bell,
 } from 'lucide-react';
 
 const iconMap = {
@@ -39,10 +41,13 @@ const iconMap = {
   MessageSquare,
   Zap,
   BarChart3,
+  Bell,
 };
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { data: unreadData } = useGetUnreadNotificationCountQuery(undefined, { pollingInterval: 30_000 });
+  const unreadCount = unreadData?.data?.count ?? 0;
 
   return (
     <aside
@@ -111,7 +116,15 @@ export function Sidebar() {
               }}
             >
               <Icon className="w-5 h-5" />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.href === '/notifications' && unreadCount > 0 && (
+                <span
+                  className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[11px] font-bold leading-none"
+                  style={{ background: 'var(--brand)', color: '#fff' }}
+                >
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
             </Link>
           );
         })}

@@ -235,7 +235,10 @@ function OrdersPageContent() {
     size: 20,
   };
 
-  const { data, isLoading, error } = useGetOrdersQuery(filters);
+  const { data, isLoading, error } = useGetOrdersQuery(filters, {
+    pollingInterval: 30_000,
+    refetchOnMountOrArgChange: true,
+  });
 
   /* ── URL update helpers ── */
   const setParam = (key: string, value: string) => {

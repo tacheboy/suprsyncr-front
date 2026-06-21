@@ -1,10 +1,10 @@
 // src/app/(dashboard)/settings/platforms/page.tsx
 'use client';
 import { useState } from 'react';
-import { useGetPlatformsQuery } from '@/store/services/sellerApi';
+import { useGetPlatformsQuery, useRegisterShopifyWebhooksMutation } from '@/store/services/sellerApi';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Plus, Check, Edit2, Star, ShoppingBag, Loader2, UserPlus, ExternalLink, BadgeCheck } from 'lucide-react';
+import { Plus, Check, Edit2, Star, ShoppingBag, Loader2, UserPlus, ExternalLink, BadgeCheck, Webhook } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { PLATFORMS } from '@/lib/constants';
@@ -44,6 +44,25 @@ export default function PlatformsPage() {
   const { data, isLoading } = useGetPlatformsQuery();
   const [creatingFor, setCreatingFor] = useState<string | null>(null);
   const [createdAccounts, setCreatedAccounts] = useState<Record<string, DummyAccount>>({});
+  const [registerWebhooks, { isLoading: registeringWebhooks }] = useRegisterShopifyWebhooksMutation();
+  const [webhookResult, setWebhookResult] = useState<{ ok: boolean; msg: string } | null>(null);
+
+  const handleRegisterWebhooks = async () => {
+    setWebhookResult(null);
+    try {
+      const res = await registerWebhooks().unwrap();
+      const registered = res.data?.registered ?? false;
+      const hint = res.data?.hint ?? '';
+      setWebhookResult({
+        ok: registered,
+        msg: registered
+          ? `Webhooks registered → ${res.data?.webhookEndpoint}`
+          : hint || 'Registration skipped — set SHOPIFY_WEBHOOK_BASE_URL to a public HTTPS URL.',
+      });
+    } catch {
+      setWebhookResult({ ok: false, msg: 'Could not reach server. Is the backend running?' });
+    }
+  };
 
   const handleCreateAccount = async (platformKey: string, label: string) => {
     setCreatingFor(platformKey);
@@ -165,12 +184,34 @@ export default function PlatformsPage() {
                   )}
                 </CardContent>
 
-                <CardFooter className="pt-0">
+                <CardFooter className="pt-0 flex flex-col gap-2">
                   {isConnected ? (
-                    <Button variant="outline" className="w-full text-slate-700 bg-white hover:bg-slate-50 border-slate-200">
-                      <Edit2 className="w-4 h-4 mr-2" />
-                      Manage Account
-                    </Button>
+                    <>
+                      <Button variant="outline" className="w-full text-slate-700 bg-white hover:bg-slate-50 border-slate-200">
+                        <Edit2 className="w-4 h-4 mr-2" />
+                        Manage Account
+                      </Button>
+                      {key === 'SHOPIFY' && !!connectedPlatform && (
+                        <>
+                          <Button
+                            variant="outline"
+                            className="w-full text-violet-700 border-violet-200 bg-violet-50 hover:bg-violet-100"
+                            onClick={handleRegisterWebhooks}
+                            disabled={registeringWebhooks}
+                          >
+                            {registeringWebhooks
+                              ? <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              : <Webhook className="w-4 h-4 mr-2" />}
+                            Register Webhooks
+                          </Button>
+                          {webhookResult && (
+                            <p className={`text-xs px-1 ${webhookResult.ok ? 'text-emerald-600' : 'text-amber-600'}`}>
+                              {webhookResult.msg}
+                            </p>
+                          )}
+                        </>
+                      )}
+                    </>
                   ) : (
                     <Button
                       className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-sm shadow-blue-200"
